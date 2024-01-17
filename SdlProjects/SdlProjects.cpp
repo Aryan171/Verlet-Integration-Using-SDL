@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 	SDL_InitSubSystem(SDL_INIT_EVERYTHING);
 
 	const int numberOfBalls = 50;
-	const int steps = 8;
+	const int steps = 10;
 
 	int mouseX = 0, mouseY = 0;
 
@@ -173,7 +173,7 @@ void ApplyCollision(Ball balls[], int len, float stepLength) {
 				collisionAxis = Normalize(balls[i].positionCurrent - balls[j].positionCurrent);
 				finalVelocity = (1 - distance / (balls[i].radius + balls[j].radius));
 				balls[i].positionCurrent += collisionAxis * finalVelocity * balls[j].radius * stepLength;
-				balls[j].positionCurrent -= collisionAxis * finalVelocity * balls[j].radius * stepLength;
+				balls[j].positionCurrent -= collisionAxis * finalVelocity * balls[i].radius * stepLength;
 			}
 		}
 	}
