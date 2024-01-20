@@ -5,7 +5,7 @@ int main(int argc, char* argv[])
 {
 	SDL_InitSubSystem(SDL_INIT_EVERYTHING);
 
-	const int numberOfBalls = 10;
+	const int numberOfBalls = 50;
 	const int steps = 10;
 
 	int mouseX = 0, mouseY = 0;
