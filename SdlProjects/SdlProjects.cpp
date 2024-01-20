@@ -5,7 +5,7 @@ int main(int argc, char* argv[])
 {
 	SDL_InitSubSystem(SDL_INIT_EVERYTHING);
 
-	const int numberOfBalls = 50;
+	const int numberOfBalls = 10;
 	const int steps = 10;
 
 	int mouseX = 0, mouseY = 0;
@@ -39,10 +39,9 @@ int main(int argc, char* argv[])
 	Ball balls[numberOfBalls];
 
 	Vec2d gravity = Vec2d(0.0f, 1000.0f);
-	Vec2d ballOneVelocity = Vec2d(500.0f, 500.0f);
 
 	for (Ball& b : balls) {
-		float radius = round(RandFloat(screenRect.y / 10, screenRect.y / 20));
+		float radius = round(RandFloat(screenRect.y / 40, screenRect.y / 20));
 		Color c = Color(RandInt(256), RandInt(256), RandInt(256), 255);
 		Vec2d position = Vec2d(RandFloat(screenRect.x), RandFloat(screenRect.y)),
 			velocity = Vec2d(RandFloat(-screenRect.y / 20, screenRect.y / 20), RandFloat(-screenRect.y / 20));
@@ -85,7 +84,7 @@ int main(int argc, char* argv[])
 		// updating the scene
 		for (int i = 1; i < numberOfBalls; i++) {
 			AccelerateBall(gravity, balls[i], ACCELERATE);
-			ApplyConstraint(balls[i], SCREEN_CONSTRAINT);
+			ApplyConstraint(balls[i], CIRCLE_CONSTRAINT);
 			UpdateBall(balls[i], deltaTimeSec);
 		}
 		for (int i = 0; i < steps; ++i) {
@@ -111,7 +110,7 @@ int main(int argc, char* argv[])
 		SDL_RenderPresent(renderer);
 		end = std::chrono::steady_clock::now();
 		deltaTimeSec = (float)(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()) / 1000000.0;
-
+		
 		//********************
 		// the FPS printed by this function is the fps that 
 		// will be achieved when this print function is removed
@@ -133,8 +132,8 @@ void AccelerateBall(const Vec2d& a, Ball& b, int accelerationType) {
 void ApplyConstraint(Ball& b, int constraintType) {
 	switch (constraintType) {
 	case CIRCLE_CONSTRAINT:
-		if(Distance(b.positionCurrent, screenMid) >= screenMid.y * 0.5) {
-				b.positionCurrent = (Normalize(b.positionCurrent - screenMid) * screenMid.y * 0.5) + screenMid;
+		if(Distance(b.positionCurrent, screenMid) >= screenMid.y * 0.75 - b.radius) {
+				b.positionCurrent = (Normalize(b.positionCurrent - screenMid) * (screenMid.y * 0.75 - b.radius)) + screenMid;
 			}
 		break;
 
